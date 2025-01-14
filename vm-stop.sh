@@ -1,8 +1,8 @@
 #!/bin/bash
 
 VMID="$1"
-ia_addr="0000:$(lspci|grep 'Audio'|grep 'Intel'|cut -c 1-7)"
-usb_addr="0000:$(lspci|grep 'USB'|grep 'Intel'|cut -c 1-7)"
+ia_addr="0000:$(lspci|grep 'Audio'|grep 'AMD'|cut -c 1-7)"
+usb_addr="0000:$(lspci|grep 'USB'|grep 'AMD'|cut -c 1-7)"
 igd_id="8086 $(lspci -n|grep '0:02.0'|cut -d ':' -f4|cut -c 1-4)"
 
 echo "waitting" >> $(dirname $0)/$VMID-hooks.log
