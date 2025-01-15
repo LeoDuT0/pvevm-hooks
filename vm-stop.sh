@@ -4,7 +4,7 @@ VMID="$1"
 ia_addr="0000:$(lspci|grep 'Audio'|grep 'AMD'|cut -c 1-7)"
 usb_addr="0000:$(lspci|grep 'USB'|grep 'AMD'|cut -c 1-7)"
 igd_id="8086 $(lspci -n|grep '0:02.0'|cut -d ':' -f4|cut -c 1-4)"
-
+nvi_addr="0000:$(lspci|grep 'NVI'|cut -c 1-7)"
 echo "waitting" >> $(dirname $0)/$VMID-hooks.log
 
 sleep 10
@@ -19,11 +19,13 @@ do
     let TimeSec+=3
 done
 
-echo 0000:00:02.0 > /sys/bus/pci/drivers/vfio-pci/unbind
+#echo 0000:07:00.0 > /sys/bus/pci/drivers/vfio-pci/unbind
+echo $nvi_addr > /sys/bus/pci/drivers/vfio-pci/unbind
 echo $ia_addr > /sys/bus/pci/drivers/vfio-pci/unbind
 #echo $usb_addr > /sys/bus/pci/drivers/vfio-pci/unbind
 echo $igd_id > /sys/bus/pci/drivers/vfio-pci/remove_id
-echo 0000:00:02.0 > /sys/bus/pci/drivers/i915/bind
+#echo 0000:07:00.0 > /sys/bus/pci/drivers/nouveau/bind
+echo $nvi_addr > /sys/bus/pci/drivers/nouveau/bind
 echo $ia_addr > /sys/bus/pci/drivers/snd_hda_intel/bind
 #echo $usb_addr >/sys/bus/pci/drivers/xhci_hcd/bind
 
